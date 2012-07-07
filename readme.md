@@ -6,7 +6,7 @@
 <h3>使用方法</h3>
 <ol>
 <li>解压文件, 将插件复制到<code>build/usr/plugins/</code>文件夹下, 然后激活;</li>
-<li>本插件提供了6种文章形式:<code>标准</code>, <code>短语</code>, <code>视频</code>, <code>音乐</code>, <code>图像</code>, <code>链接</code>;</li>
+<li>本插件提供了6种文章形式:<code>标准</code>, <code>短语</code>, <code>视频</code>, <code>音频</code>, <code>图像</code>, <code>链接</code>;</li>
 </ol>
 <h3>设置选项</h3>
 <div class="highlight">
