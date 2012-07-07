@@ -70,7 +70,7 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
      */
     public static function formatsSelect()
     {
-		$args = array('post'=>'标准', 'phrase'=>'短语', 'video'=>'视频', 'music'=>'音乐', 'image'=>'图像', 'link'=>'链接');
+		$args = array('post'=>'标准', 'phrase'=>'短语', 'video'=>'视频', 'music'=>'音频', 'image'=>'图像', 'link'=>'链接');
 		if(isset($_GET['cid'])){
 			$cid = $_GET['cid'];
 			$db = Typecho_Db::get();
