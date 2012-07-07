@@ -24,7 +24,7 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
 
         // contents 表中若无 format 字段则添加
         if (!array_key_exists('format', $db->fetchRow($db->select()->from('table.contents'))))
-            $db->query('ALTER TABLE `'. $prefix .'contents` ADD `format` varchar(16) DEFAULT `post`;');
+            $db->query("ALTER TABLE `".$prefix."contents` ADD `format` varchar(16) DEFAULT 'post'");
 			
 		//添加文章
         Typecho_Plugin::factory('admin/write-post.php')->option = array('PostFormat_Plugin', 'formatsSelect');       
