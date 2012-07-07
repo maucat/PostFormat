@@ -66,7 +66,8 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
      * 编辑文章页, 添加 "文章形式" 选项
      *
      *
-	 * @param string  $args 文章形式
+     * @param string  $args 文章形式
+     * @return void
      */
     public static function formatsSelect()
     {
@@ -90,8 +91,8 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
     /**
      * 提交文章, 设置文章形式
      *
-	 * 
-     *
+     * 
+     * @return void
      */
 	public static function formatsSet($contents, $inst)
 	{
@@ -147,6 +148,7 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
      * 语法: PostFormat_Plugin::getFormat();
      *
      * @access public
+     * @return void
      */
 	public static function getFormat()
 	{
