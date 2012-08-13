@@ -51,7 +51,11 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
      * @param Typecho_Widget_Helper_Form $form 配置面板
      * @return void
      */
-    public static function config(Typecho_Widget_Helper_Form $form){}
+    public static function config(Typecho_Widget_Helper_Form $form){
+		echo '<style type="text/css">p#format{padding:10px 0 10px 60px;line-height:2em}ul{border:none!important}code{margin: 0 2px;padding:2px 5px;white-space: nowrap;border: 1px solid #EAEAEA;background-color: #fff;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;}</style><p id="format">本插件提供了9种文章形式:<br /><code>标准 post</code> <code>日志 aside</code> <code>相册 gallery</code> <code>链接 link</code> <code>引语 quote</code> <code>状态 status</code> <code>视频 video</code> <code>音频 audio</code> <code>聊天 chat</code></p><p id="format">使用方法:</p><div class="source" style="font-size:12px;padding-left:60px;"><span style="color: rgb(0, 0, 0); ">&lt;?</span><span style="color: rgb(0, 0, 0); ">php</span> <span style="color: rgb(0, 0, 128); font-weight: bold; ">while</span>(<span style="color: rgb(0, 0, 0); ">$this</span><span style="color: rgb(0, 0, 0); ">-&gt;</span><span style="color: rgb(255, 0, 0); ">next</span>())<span style="color: rgb(0, 0, 0); ">:</span> <span style="color: rgb(0, 0, 0); ">$format</span> <span style="color: rgb(0, 0, 0); ">=</span> <span style="color: rgb(0, 0, 0); ">PostFormat_Plugin</span><span style="color: rgb(0, 0, 0); ">::</span><span style="color: rgb(255, 0, 0); ">getFormat</span>();<span style="color: rgb(0, 128, 128); ">?&gt;</span><br> &nbsp; <span style="color: rgb(0, 128, 128); ">&lt;?php</span> <span style="color: rgb(0, 0, 128); font-weight: bold; ">if</span> (<span style="color: rgb(0, 0, 0); ">$format</span> <span style="color: rgb(0, 0, 0); ">==</span> <span style="color: rgb(0, 0, 255); ">&#39;post&#39;</span>) <span style="color: rgb(0, 0, 0); ">{</span> <span style="color: rgb(0, 128, 128); ">?&gt;</span><br><span style="color: rgb(0, 0, 0); "> &nbsp; &nbsp; &nbsp; // 一般文章形式</span><br> &nbsp; <span style="color: rgb(0, 128, 128); ">&lt;?php</span> <span style="color: rgb(0, 0, 0); ">}</span> <span style="color: rgb(0, 0, 128); font-weight: bold; ">elseif</span> (<span style="color: rgb(0, 0, 0); ">$format</span> <span style="color: rgb(0, 0, 0); ">==</span> <span style="color: rgb(0, 0, 255); ">&#39;status&#39;</span><span style="color: rgb(0, 0, 0); ">){</span> <span style="color: rgb(0, 128, 128); ">?&gt;</span><br><span style="color: rgb(0, 0, 0); "> &nbsp; &nbsp; &nbsp; // 状态 类似微博</span><br> &nbsp; <span style="color: rgb(0, 128, 128); ">&lt;?php</span> <span style="color: rgb(0, 0, 0); ">}</span> <span style="color: rgb(0, 0, 128); font-weight: bold; ">elseif</span> (<span style="color: rgb(0, 0, 0); ">$format</span> <span style="color: rgb(0, 0, 0); ">==</span> <span style="color: rgb(0, 0, 255); ">&#39;link&#39;</span><span style="color: rgb(0, 0, 0); ">){</span> <span style="color: rgb(0, 128, 128); ">?&gt;</span><br><span style="color: rgb(0, 0, 0); "> &nbsp; &nbsp; &nbsp; // 链接</span><br> &nbsp; <span style="color: rgb(0, 128, 128); ">&lt;?php</span> <span style="color: rgb(0, 0, 0); ">}</span><span style="color: rgb(0, 128, 128); ">?&gt;</span><br><span style="color: rgb(0, 128, 128); ">&lt;?php</span> <span style="color: rgb(0, 0, 128); font-weight: bold; ">endwhile</span>; <span style="color: rgb(0, 128, 128); ">?&gt;</span></div>';
+		$formats = new Typecho_Widget_Helper_Form_Element_Checkbox('format', array('aside'=>'日志', 'gallery'=>'相册', 'link'=>'链接', 'quote'=>'引语', 'status'=>'状态', 'video'=>'视频', 'audio'=>'音频', 'chat'=>'聊天'),array(""),'选取支持的文章形式',_t('被选择的文章形式将会在编写文章时出现在选项里, 一项也不选择将会默认显示所有'));
+		$form->addInput($formats->multiMode()); 
+	}
 
     /**
      * 个人用户的配置面板
@@ -71,7 +75,20 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
      */
     public static function formatsSelect()
     {
-		$args = array('post'=>'标准', 'phrase'=>'短语', 'video'=>'视频', 'music'=>'音频', 'image'=>'图像', 'link'=>'链接');
+		$options = Typecho_Widget::widget('Widget_Options');
+		$formats = $options->plugin('PostFormat');
+		$custom_format =  $formats->format;
+		$regular_format = array('post'=>'标准', 'aside'=>'日志', 'gallery'=>'相册', 'link'=>'链接', 'quote'=>'引语', 'status'=>'状态', 'video'=>'视频', 'audio'=>'音频', 'chat'=>'聊天');
+		if(count($custom_format)>0){
+			$args = array('post'=>'标准');
+			foreach($regular_format as $key=>$val){
+				if(in_array($key,$custom_format)){
+					$args[$key] = $val;
+				}
+			}
+		}else{
+			$args = array('post'=>'标准', 'aside'=>'日志', 'gallery'=>'相册', 'link'=>'链接', 'quote'=>'引语', 'status'=>'状态', 'video'=>'视频', 'audio'=>'音频', 'chat'=>'聊天');
+		}
 		if(isset($_GET['cid'])){
 			$cid = $_GET['cid'];
 			$db = Typecho_Db::get();
@@ -108,10 +125,11 @@ class PostFormat_Plugin implements Typecho_Plugin_Interface
 			if( $contents['title']!="" ){
 				$contents['status'] = $_POST['do']== 'publish' ? 'publish':'draft';
 				$cid = $post->insert($contents);
+
 				/** 插入分类 */
 				if (array_key_exists('category', $contents)) {
 					$post->setCategories($cid, !empty($contents['category']) && is_array($contents['category']) ?
-					$contents['category'] : array($post->options->defaultCategory), false, true);
+					$contents['category'] : array($options->defaultCategory), false, true);
 				}
 
 				/** 插入标签 */
